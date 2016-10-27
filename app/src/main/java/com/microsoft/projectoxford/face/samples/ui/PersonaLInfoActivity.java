@@ -37,8 +37,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,7 +78,11 @@ import java.util.UUID;
 
 public class PersonaLInfoActivity extends AppCompatActivity {
 
-private Intent intent;
+    private Intent intent;
+    private Uri mUriPhotoTaken;
+    private static final int REQUEST_TAKE_PHOTO = 0;
+    private static final int REQUEST_SELECT_IMAGE_IN_ALBUM = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,5 +106,56 @@ private Intent intent;
         Intent activityIntent = new Intent(this, FindSimilarFaceActivity.class);
         activityIntent.setData(intent.getData());
         startActivity(activityIntent);
+    }
+
+    // Deal with the result of selection of the photos and faces.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode)
+        {
+            case REQUEST_TAKE_PHOTO:
+            case REQUEST_SELECT_IMAGE_IN_ALBUM:
+                if (resultCode == RESULT_OK) {
+                    if (data != null && data.getData() != null) {
+                        intent = data;
+                    }
+                    setImageToProfile();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    // When the button of "Take a Photo with Camera" is pressed.
+    public void takePhoto(View view) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            // Save the photo taken to a temporary file.
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            try {
+                File file = File.createTempFile("IMG_", ".jpg", storageDir);
+                mUriPhotoTaken = Uri.fromFile(file);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, mUriPhotoTaken);
+                startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+            } catch (IOException e) {
+                setInfo(e.getMessage());
+            }
+        }
+    }
+
+    // When the button of "Select a Photo in Album" is pressed.
+    public void selectImageInAlbum(View view) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_SELECT_IMAGE_IN_ALBUM);
+        }
+    }
+
+    // Set the information panel on screen.
+    private void setInfo(String info) {
+        TextView textView = (TextView) findViewById(R.id.info);
+        textView.setText(info);
     }
 }

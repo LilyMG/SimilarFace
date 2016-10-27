@@ -29,7 +29,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginBottom="@dimen/view_margin"
-            android:onClick="startSearch"
+            android:onClick="takePhoto"
             android:src="@android:drawable/ic_menu_camera" />
 
 
@@ -38,7 +38,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginBottom="@dimen/view_margin"
-            android:onClick="startSearch"
+            android:onClick="selectImageInAlbum"
             android:src="@android:drawable/ic_menu_gallery" />
 
     </LinearLayout>
