@@ -37,6 +37,10 @@
             android:label="@string/select_an_image"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.PersonaLInfoActivity"
+            android:label="@string/select_an_image"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".log.FindSimilarFaceLogActivity"
             android:label="@string/find_similar_face_log"
             android:parentActivityName=".ui.FindSimilarFaceActivity"

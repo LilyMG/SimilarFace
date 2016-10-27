@@ -99,10 +99,10 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         imageUri = data.getData();
                     }
-                    Intent intent = new Intent();
+                    Intent intent = new Intent(this, PersonaLInfoActivity.class);
                     intent.setData(imageUri);
-//                    setResult(RESULT_OK, intent);
-//                    finish();
+                    setResult(RESULT_OK, intent);
+                    startActivity(intent);
                 }
                 break;
             default:
