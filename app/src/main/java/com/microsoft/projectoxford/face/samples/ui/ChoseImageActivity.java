@@ -43,6 +43,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -86,7 +88,6 @@ public class ChoseImageActivity extends AppCompatActivity {
     private static final int REQUEST_SELECT_IMAGE_IN_ALBUM = 1;
 
 
-
     // Background task for face detection
     class DetectionTask extends AsyncTask<InputStream, String, Face[]> {
         private boolean mSucceed = true;
@@ -125,12 +126,32 @@ public class ChoseImageActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Face[] result) {
-             if (mRequestCode == REQUEST_SELECT_IMAGE) {
+            if (mRequestCode == REQUEST_SELECT_IMAGE) {
                 setUiAfterDetectionForSelectImage(result);
             }
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(0, 0, 0, "next").setIcon(R.drawable.abc_ic_menu_paste_mtrl_am_alpha)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 0:
+                Intent activityIntent = new Intent(this, FindSimilarFaceActivity.class);
+                activityIntent.setData(data.getData());
+                startActivity(activityIntent);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,8 +169,7 @@ public class ChoseImageActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode)
-        {
+        switch (requestCode) {
             case REQUEST_TAKE_PHOTO:
             case REQUEST_SELECT_IMAGE_IN_ALBUM:
                 if (resultCode == RESULT_OK) {
