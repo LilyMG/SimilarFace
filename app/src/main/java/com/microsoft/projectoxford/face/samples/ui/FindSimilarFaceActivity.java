@@ -249,7 +249,7 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
 //        setAllButtonsEnabledStatus(true);
 
         // Show the result of face finding similar faces.
-        GridView similarFaces = (GridView) findViewById(R.id.similar_faces);
+        ListView similarFaces = (ListView) findViewById(R.id.similar_faces);
         mSimilarFaceListAdapter = new SimilarFaceListAdapter(result);
         similarFaces.setAdapter(mSimilarFaceListAdapter);
     }
@@ -575,11 +575,7 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
                     imageView.setImageBitmap(faceListAdapter.faceThumbnails.get(position));
 
                     // Clear the result of finding similar faces.
-                    GridView similarFaces = (GridView) findViewById(R.id.similar_faces);
-                    mSimilarFaceListAdapter = new SimilarFaceListAdapter(null);
-                    similarFaces.setAdapter(mSimilarFaceListAdapter);
-
-                    similarFaces = (GridView) findViewById(R.id.facial_similar_faces);
+                    ListView similarFaces = (ListView) findViewById(R.id.similar_faces);
                     mSimilarFaceListAdapter = new SimilarFaceListAdapter(null);
                     similarFaces.setAdapter(mSimilarFaceListAdapter);
 
@@ -749,7 +745,7 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
             if (convertView == null) {
                 LayoutInflater layoutInflater =
                         (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = layoutInflater.inflate(R.layout.item_face, parent, false);
+                convertView = layoutInflater.inflate(R.layout.similar_item_face, parent, false);
             }
             convertView.setId(position);
 
