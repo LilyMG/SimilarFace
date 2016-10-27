@@ -453,7 +453,7 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_ADD_FACE) {
             if(resultCode == RESULT_OK) {
-                mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.list_img);
+                mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face_a);
                 if (mBitmap != null) {
                     View originalFaces = findViewById(R.id.all_faces);
                     originalFaces.setVisibility(View.VISIBLE);
