@@ -348,6 +348,8 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
     // Progress dialog popped up when communicating with server.
     ProgressDialog mProgressDialog;
 
+    private Intent data;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -363,6 +365,30 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
         initializeFaceList();
 
         LogHelper.clearFindSimilarFaceLog();
+        data = getIntent();
+        setSelectedImage();
+    }
+
+    private void setSelectedImage() {
+
+        mTargetBitmap = ImageHelper.loadSizeLimitedBitmapFromUri(
+                data.getData(), getContentResolver());
+        if (mTargetBitmap != null) {
+            View originalFaces = findViewById(R.id.all_faces);
+            originalFaces.setVisibility(View.VISIBLE);
+
+            // Put the image into an input stream for detection.
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            mTargetBitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
+            ByteArrayInputStream inputStream
+                    = new ByteArrayInputStream(output.toByteArray());
+
+            setAllButtonsEnabledStatus(false);
+
+            addLog("Request: Detecting in image " + data.getData());
+            // Start a background task to detect faces in the image.
+            new DetectionTask(REQUEST_SELECT_IMAGE).execute(inputStream);
+        }
     }
 
     @Override
@@ -389,26 +415,26 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
                 }
             }
         } else if (requestCode == REQUEST_SELECT_IMAGE) {
-            if(resultCode == RESULT_OK) {
-                mTargetBitmap = ImageHelper.loadSizeLimitedBitmapFromUri(
-                        data.getData(), getContentResolver());
-                if (mTargetBitmap != null) {
-                    View originalFaces = findViewById(R.id.all_faces);
-                    originalFaces.setVisibility(View.VISIBLE);
-
-                    // Put the image into an input stream for detection.
-                    ByteArrayOutputStream output = new ByteArrayOutputStream();
-                    mTargetBitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
-                    ByteArrayInputStream inputStream
-                            = new ByteArrayInputStream(output.toByteArray());
-
-                    setAllButtonsEnabledStatus(false);
-
-                    addLog("Request: Detecting in image " + data.getData());
-                    // Start a background task to detect faces in the image.
-                    new DetectionTask(REQUEST_SELECT_IMAGE).execute(inputStream);
-                }
-            }
+//            if(resultCode == RESULT_OK) {
+//                mTargetBitmap = ImageHelper.loadSizeLimitedBitmapFromUri(
+//                        data.getData(), getContentResolver());
+//                if (mTargetBitmap != null) {
+//                    View originalFaces = findViewById(R.id.all_faces);
+//                    originalFaces.setVisibility(View.VISIBLE);
+//
+//                    // Put the image into an input stream for detection.
+//                    ByteArrayOutputStream output = new ByteArrayOutputStream();
+//                    mTargetBitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
+//                    ByteArrayInputStream inputStream
+//                            = new ByteArrayInputStream(output.toByteArray());
+//
+//                    setAllButtonsEnabledStatus(false);
+//
+//                    addLog("Request: Detecting in image " + data.getData());
+//                    // Start a background task to detect faces in the image.
+//                    new DetectionTask(REQUEST_SELECT_IMAGE).execute(inputStream);
+//                }
+//            }
         }
     }
 
