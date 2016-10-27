@@ -37,9 +37,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,6 +67,7 @@ import com.microsoft.projectoxford.face.samples.log.FindSimilarFaceLogActivity;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -120,7 +124,7 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
                         + (result == null ? "0": result.length)
                         + " matchPerson similar face" + ((result != null && result.length != 1)? "s": "");
                 addLog("Response: Success. " + resultString);
-                setInfo(resultString);
+//                setInfo(resultString);
             }
 
             // Show the result on screen when verification is done.
@@ -172,14 +176,16 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
                         + (result == null ? "0": result.length)
                         + " matchFace similar face" + ((result != null && result.length != 1)? "s": "");
                 addLog("Response: Success. " + resultString);
-                appendInfo((result == null ? "0": result.length)
-                        + " matchFace similar face" + ((result != null && result.length != 1)? "s": ""));
+//                appendInfo((result == null ? "0": result.length)
+//                        + " matchFace similar face" + ((result != null && result.length != 1)? "s": ""));
             }
 
             // Show the result on screen when verification is done.
             setUiAfterFindFacialSimilarFaces(result);
         }
     }
+
+    private Uri mUriPhotoTaken;
 
 
     // Background task for face detection
@@ -238,7 +244,7 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
     void setUiAfterFindPersonalSimilarFaces(SimilarFace[] result) {
         mProgressDialog.dismiss();
 
-        setAllButtonsEnabledStatus(true);
+//        setAllButtonsEnabledStatus(true);
 
         // Show the result of face finding similar faces.
         GridView similarFaces = (GridView) findViewById(R.id.similar_faces);
@@ -248,37 +254,37 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
     void setUiAfterFindFacialSimilarFaces(SimilarFace[] result) {
         mProgressDialog.dismiss();
 
-        setAllButtonsEnabledStatus(true);
+//        setAllButtonsEnabledStatus(true);
 
         // Show the result of face finding similar faces.
-        GridView similarFaces = (GridView) findViewById(R.id.facial_similar_faces);
-        mSimilarFaceListAdapter = new SimilarFaceListAdapter(result);
-        similarFaces.setAdapter(mSimilarFaceListAdapter);
+//        GridView similarFaces = (GridView) findViewById(R.id.facial_similar_faces);
+//        mSimilarFaceListAdapter = new SimilarFaceListAdapter(result);
+//        similarFaces.setAdapter(mSimilarFaceListAdapter);
     }
 
     void setUiDuringBackgroundTask(String progress) {
         mProgressDialog.setMessage(progress);
 
-        setInfo(progress);
+//        setInfo(progress);
     }
 
     void setUiAfterDetectionForAddFace(Face[] result) {
-        setAllButtonsEnabledStatus(true);
+//        setAllButtonsEnabledStatus(true);
 
         // Show the detailed list of original faces.
         if (mBitmap != null) {
             mFaceListAdapter.addFaces(result, mBitmap);
 
-            GridView listView = (GridView) findViewById(R.id.all_faces);
-            listView.setAdapter(mFaceListAdapter);
+//            GridView listView = (GridView) findViewById(R.id.all_faces);
+//            listView.setAdapter(mFaceListAdapter);
 
-            TextView textView = (TextView) findViewById(R.id.text_all_faces);
-            textView.setText(String.format(
-                    "Face database: %d face%s in total",
-                    mFaceListAdapter.faces.size(),
-                    mFaceListAdapter.faces.size() != 1 ? "s" : ""));
+//            TextView textView = (TextView) findViewById(R.id.text_all_faces);
+//            textView.setText(String.format(
+//                    "Face database: %d face%s in total",
+//                    mFaceListAdapter.faces.size(),
+//                    mFaceListAdapter.faces.size() != 1 ? "s" : ""));
 
-            refreshFindSimilarFaceButtonEnabledStatus();
+//            refreshFindSimilarFaceButtonEnabledStatus();
 
             mBitmap = null;
 
@@ -289,7 +295,7 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
     }
 
     void setUiAfterDetectionForSelectImage(Face[] result) {
-        setAllButtonsEnabledStatus(true);
+//        setAllButtonsEnabledStatus(true);
 
         // Show the detailed list of detected faces.
         mTargetFaceListAdapter = new FaceListAdapter();
@@ -307,7 +313,7 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
             imageView.setImageBitmap(mTargetFaceListAdapter.faceThumbnails.get(0));
         }
 
-        refreshFindSimilarFaceButtonEnabledStatus();
+//        refreshFindSimilarFaceButtonEnabledStatus();
 
         mTargetBitmap = null;
 
@@ -318,10 +324,10 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
     private void setDetectionStatus() {
         if (mBitmap == null && mTargetBitmap == null) {
             mProgressDialog.dismiss();
-            setInfo("Detection is done");
+//            setInfo("Detection is done");
         } else {
             mProgressDialog.setMessage("Detecting...");
-            setInfo("Detecting...");
+//            setInfo("Detecting...");
         }
     }
 
@@ -345,6 +351,9 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
 
     // Flag to indicate which task is to be performed.
     protected static final int REQUEST_SELECT_IMAGE = 1;
+
+    private static final int REQUEST_TAKE_PHOTO = 2;
+    private static final int REQUEST_SELECT_IMAGE_IN_ALBUM = 3;
 
     // The ID of the target face to find similar face.
     private UUID mFaceId;
@@ -383,7 +392,7 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle(getString(R.string.progress_dialog_title));
 
-        setFindSimilarFaceButtonEnabledStatus(false);
+//        setFindSimilarFaceButtonEnabledStatus(false);
 
         initializeFaceList();
 
@@ -393,13 +402,38 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
         initAndFindImages();
     }
 
+    // When the button of "Take a Photo with Camera" is pressed.
+    public void takePhoto(View view) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            // Save the photo taken to a temporary file.
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            try {
+                File file = File.createTempFile("IMG_", ".jpg", storageDir);
+                mUriPhotoTaken = Uri.fromFile(file);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, mUriPhotoTaken);
+                startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+            } catch (IOException e) {
+//                setInfo(e.getMessage());
+            }
+        }
+    }
+
+    public void selectImageInAlbum(View view) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_SELECT_IMAGE_IN_ALBUM);
+        }
+    }
+
     private void setSelectedImage() {
 
         mTargetBitmap = ImageHelper.loadSizeLimitedBitmapFromUri(
                 data.getData(), getContentResolver());
         if (mTargetBitmap != null) {
-            View originalFaces = findViewById(R.id.all_faces);
-            originalFaces.setVisibility(View.VISIBLE);
+//            View originalFaces = findViewById(R.id.all_faces);
+//            originalFaces.setVisibility(View.VISIBLE);
 
             // Put the image into an input stream for detection.
             ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -407,7 +441,7 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
             ByteArrayInputStream inputStream
                     = new ByteArrayInputStream(output.toByteArray());
 
-            setAllButtonsEnabledStatus(false);
+//            setAllButtonsEnabledStatus(false);
 
             addLog("Request: Detecting in image " + data.getData());
             // Start a background task to detect faces in the image.
@@ -419,7 +453,7 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_ADD_FACE) {
             if(resultCode == RESULT_OK) {
-                mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face_b);
+                mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.list_img);
                 if (mBitmap != null) {
                     View originalFaces = findViewById(R.id.all_faces);
                     originalFaces.setVisibility(View.VISIBLE);
@@ -430,7 +464,7 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
                     ByteArrayInputStream inputStream
                             = new ByteArrayInputStream(output.toByteArray());
 
-                    setAllButtonsEnabledStatus(false);
+//                    setAllButtonsEnabledStatus(false);
 
                     addLog("Request: Detecting in image " + data.getData());
                     // Start a background task to detect faces in the image.
@@ -458,38 +492,46 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
 //                    new DetectionTask(REQUEST_SELECT_IMAGE).execute(inputStream);
 //                }
 //            }
+        } else if (requestCode == REQUEST_TAKE_PHOTO || requestCode == REQUEST_SELECT_IMAGE_IN_ALBUM) {
+            if (data != null && data.getData() != null) {
+                this.data = data;
+                initializeFaceList();
+                setSelectedImage();
+
+            }
         }
+
     }
 
-    // Set whether the buttons are enabled.
-    private void setAllButtonsEnabledStatus(boolean isEnabled) {
-        Button addFaceButton = (Button) findViewById(R.id.add_faces);
-        addFaceButton.setEnabled(isEnabled);
-
-        Button selectImageButton = (Button) findViewById(R.id.select_image);
-        selectImageButton.setEnabled(isEnabled);
-
-        Button detectButton = (Button) findViewById(R.id.find_similar_faces);
-        detectButton.setEnabled(isEnabled);
-
-        Button logButton = (Button) findViewById(R.id.view_log);
-        logButton.setEnabled(isEnabled);
-    }
+//    // Set whether the buttons are enabled.
+//    private void setAllButtonsEnabledStatus(boolean isEnabled) {
+//        Button addFaceButton = (Button) findViewById(R.id.add_faces);
+//        addFaceButton.setEnabled(isEnabled);
+//
+//        Button selectImageButton = (Button) findViewById(R.id.select_image);
+//        selectImageButton.setEnabled(isEnabled);
+//
+//        Button detectButton = (Button) findViewById(R.id.find_similar_faces);
+//        detectButton.setEnabled(isEnabled);
+//
+//        Button logButton = (Button) findViewById(R.id.view_log);
+//        logButton.setEnabled(isEnabled);
+//    }
 
     // Set the group button is enabled or not.
-    private void setFindSimilarFaceButtonEnabledStatus(boolean isEnabled) {
-        Button button = (Button) findViewById(R.id.find_similar_faces);
-        button.setEnabled(isEnabled);
-    }
+//    private void setFindSimilarFaceButtonEnabledStatus(boolean isEnabled) {
+//        Button button = (Button) findViewById(R.id.find_similar_faces);
+//        button.setEnabled(isEnabled);
+//    }
 
-    // Set the group button is enabled or not.
-    private void refreshFindSimilarFaceButtonEnabledStatus() {
-        if (mFaceListAdapter.faces.size() != 0 && mFaceId != null) {
-            setFindSimilarFaceButtonEnabledStatus(true);
-        } else {
-            setFindSimilarFaceButtonEnabledStatus(false);
-        }
-    }
+//    // Set the group button is enabled or not.
+//    private void refreshFindSimilarFaceButtonEnabledStatus() {
+//        if (mFaceListAdapter.faces.size() != 0 && mFaceId != null) {
+//            setFindSimilarFaceButtonEnabledStatus(true);
+//        } else {
+//            setFindSimilarFaceButtonEnabledStatus(false);
+//        }
+//    }
 
     // Initialize the ListView which contains the thumbnails of the detected faces.
     private void initializeFaceList() {
@@ -516,7 +558,7 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
                     mSimilarFaceListAdapter = new SimilarFaceListAdapter(null);
                     similarFaces.setAdapter(mSimilarFaceListAdapter);
 
-                    setInfo("");
+//                    setInfo("");
                 }
 
                 // Show the list of detected face thumbnails.
@@ -533,7 +575,7 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
 
     public void findSimilarFaces(View view) {
         if (mFaceId == null || mFaceListAdapter.faces.size() == 0) {
-            setInfo("Parameters are not ready");
+//            setInfo("Parameters are not ready");
         }
         List<UUID> faceIds = new ArrayList<>();
         faceIds.add(mFaceId);
@@ -541,7 +583,7 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
             faceIds.add(face.faceId);
         }
 
-        setAllButtonsEnabledStatus(false);
+//        setAllButtonsEnabledStatus(false);
         new FindPersonalSimilarFaceTask().execute(faceIds.toArray(new UUID[faceIds.size()]));
         new FindFacialSimilarFaceTask().execute(faceIds.toArray(new UUID[faceIds.size()]));
     }
@@ -556,18 +598,18 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_SELECT_IMAGE);
     }
 
-    // Set the information panel on screen.
-    private void setInfo(String info) {
-        TextView textView = (TextView) findViewById(R.id.info);
-        textView.setText(info);
-    }
+//    // Set the information panel on screen.
+//    private void setInfo(String info) {
+//        TextView textView = (TextView) findViewById(R.id.info);
+//        textView.setText(info);
+//    }
 
     // Append the information panel on screen.
-    private void appendInfo(String info) {
-        TextView textView = (TextView) findViewById(R.id.info);
-        String str = (String)textView.getText();
-        textView.setText(str + ',' + info);
-    }
+//    private void appendInfo(String info) {
+//        TextView textView = (TextView) findViewById(R.id.info);
+//        String str = (String)textView.getText();
+//        textView.setText(str + ',' + info);
+//    }
     // Add a log item.
     private void addLog(String log) {
         LogHelper.addFindSimilarFaceLog(log);
@@ -601,7 +643,7 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
                         faceIdThumbnailMap.put(face.faceId, faceThumbnail);
                     } catch (IOException e) {
                         // Show the exception when generating face thumbnail fails.
-                        setInfo(e.getMessage());
+//                        setInfo(e.getMessage());
                     }
                 }
             }
