@@ -61,14 +61,6 @@ public class FoundedImagesActivity extends AppCompatActivity {
     private void initAndFindImages() {
         mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face_a);
         putImageForRequest();
-        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face_a);
-        putImageForRequest();
-        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face_a);
-        putImageForRequest();
-        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face_a);
-        putImageForRequest();
-        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face_a);
-        putImageForRequest();
     }
 
 

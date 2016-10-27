@@ -266,23 +266,26 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
         setAllButtonsEnabledStatus(true);
 
         // Show the detailed list of original faces.
-        mFaceListAdapter.addFaces(result, mBitmap);
+        if (mBitmap != null) {
+            mFaceListAdapter.addFaces(result, mBitmap);
 
-        GridView listView = (GridView) findViewById(R.id.all_faces);
-        listView.setAdapter(mFaceListAdapter);
+            GridView listView = (GridView) findViewById(R.id.all_faces);
+            listView.setAdapter(mFaceListAdapter);
 
-        TextView textView = (TextView) findViewById(R.id.text_all_faces);
-        textView.setText(String.format(
-                "Face database: %d face%s in total",
-                mFaceListAdapter.faces.size(),
-                mFaceListAdapter.faces.size() != 1 ? "s" : ""));
+            TextView textView = (TextView) findViewById(R.id.text_all_faces);
+            textView.setText(String.format(
+                    "Face database: %d face%s in total",
+                    mFaceListAdapter.faces.size(),
+                    mFaceListAdapter.faces.size() != 1 ? "s" : ""));
 
-        refreshFindSimilarFaceButtonEnabledStatus();
+            refreshFindSimilarFaceButtonEnabledStatus();
 
-        mBitmap = null;
+            mBitmap = null;
 
-        // Set the status bar.
-        setDetectionStatus();
+            // Set the status bar.
+            setDetectionStatus();
+        }
+
     }
 
     void setUiAfterDetectionForSelectImage(Face[] result) {
@@ -351,6 +354,25 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
 
     private Intent data;
 
+
+    private void putImageForRequest (){
+        if (mBitmap != null) {
+
+            // Put the image into an input stream for detection.
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
+            ByteArrayInputStream inputStream
+                    = new ByteArrayInputStream(output.toByteArray());
+            // Start a background task to detect faces in the image.
+            new DetectionTask(REQUEST_ADD_FACE).execute(inputStream);
+        }
+    }
+
+    private void initAndFindImages() {
+        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face_a);
+        putImageForRequest();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -368,6 +390,7 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
         LogHelper.clearFindSimilarFaceLog();
         data = getIntent();
         setSelectedImage();
+        initAndFindImages();
     }
 
     private void setSelectedImage() {
@@ -396,7 +419,7 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_ADD_FACE) {
             if(resultCode == RESULT_OK) {
-                mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face_a);
+                mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face_b);
                 if (mBitmap != null) {
                     View originalFaces = findViewById(R.id.all_faces);
                     originalFaces.setVisibility(View.VISIBLE);

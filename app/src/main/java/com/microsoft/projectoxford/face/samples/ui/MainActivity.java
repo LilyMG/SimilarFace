@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         imageUri = data.getData();
                     }
-                    Intent intent = new Intent(this, ChoseImageActivity.class);
+                    Intent intent = new Intent(this, FindSimilarFaceActivity.class);
                     intent.setData(imageUri);
                     setResult(RESULT_OK, intent);
                     startActivity(intent);
