@@ -19,6 +19,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by LilitTevosyan on 10/27/16.
@@ -31,6 +33,7 @@ public class FoundedImagesActivity extends AppCompatActivity {
     protected static final int REQUEST_SELECT_IMAGE = 1;
     private ArrayList<Face> detectedFaces;
     ProgressDialog mProgressDialog;
+    private boolean isRunning = false;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +45,7 @@ public class FoundedImagesActivity extends AppCompatActivity {
         initAndFindImages();
     }
 
-    private void initAndFindImages(){
-        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face_a);
+    private void putImageForRequest (){
         if (mBitmap != null) {
 
             // Put the image into an input stream for detection.
@@ -54,7 +56,19 @@ public class FoundedImagesActivity extends AppCompatActivity {
             // Start a background task to detect faces in the image.
             new FoundedImagesActivity.DetectionTask(REQUEST_ADD_FACE).execute(inputStream);
         }
+    }
 
+    private void initAndFindImages() {
+        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face_a);
+        putImageForRequest();
+        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face_a);
+        putImageForRequest();
+        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face_a);
+        putImageForRequest();
+        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face_a);
+        putImageForRequest();
+        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face_a);
+        putImageForRequest();
     }
 
 
@@ -101,7 +115,15 @@ public class FoundedImagesActivity extends AppCompatActivity {
         protected void onPostExecute(Face[] result) {
             detectedFaces.addAll(Arrays.asList(result));
             System.out.println(detectedFaces);
-            mProgressDialog.dismiss();
+            Timer timer=new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    if(mProgressDialog.isShowing() ) {
+                        mProgressDialog.dismiss();
+                    }
+                }
+            }, 1000, 1000);
         }
     }
 
