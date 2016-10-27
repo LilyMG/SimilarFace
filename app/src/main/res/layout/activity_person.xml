@@ -14,10 +14,14 @@
 
     <ImageView
         android:id="@+id/person_name_view"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_marginBottom="@dimen/view_margin"
         android:src="@android:drawable/btn_star" />
+
+    <TextView android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="some description about you"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
