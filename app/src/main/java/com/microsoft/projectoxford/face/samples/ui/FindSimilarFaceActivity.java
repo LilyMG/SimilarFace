@@ -45,6 +45,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -380,6 +382,29 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
     private void initAndFindImages() {
         mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face_a);
         putImageForRequest();
+    }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(0, 0, 0, "next").setIcon(R.drawable.abc_ic_menu_paste_mtrl_am_alpha)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 0:
+               findSimilarFaces(null);
+                findViewById(R.id.view1).setVisibility(View.GONE);
+                findViewById(R.id.view2).setVisibility(View.VISIBLE);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
