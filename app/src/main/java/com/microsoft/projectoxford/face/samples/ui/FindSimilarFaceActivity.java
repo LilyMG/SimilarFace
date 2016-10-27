@@ -36,6 +36,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -395,8 +396,7 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_ADD_FACE) {
             if(resultCode == RESULT_OK) {
-                mBitmap = ImageHelper.loadSizeLimitedBitmapFromUri(
-                        data.getData(), getContentResolver());
+                mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face_a);
                 if (mBitmap != null) {
                     View originalFaces = findViewById(R.id.all_faces);
                     originalFaces.setVisibility(View.VISIBLE);

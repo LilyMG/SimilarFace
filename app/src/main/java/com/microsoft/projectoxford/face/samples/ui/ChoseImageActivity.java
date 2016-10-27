@@ -143,7 +143,7 @@ public class ChoseImageActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case 0:
-                Intent activityIntent = new Intent(this, FindSimilarFaceActivity.class);
+                Intent activityIntent = new Intent(this, FoundedImagesActivity.class);
                 activityIntent.setData(data.getData());
                 startActivity(activityIntent);
                 return true;

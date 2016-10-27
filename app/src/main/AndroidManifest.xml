@@ -37,7 +37,7 @@
             android:label="@string/select_an_image"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.PersonaLInfoActivity"
+            android:name=".ui.FoundedImagesActivity"
             android:label="@string/select_an_image"
             android:screenOrientation="portrait" />
         <activity
