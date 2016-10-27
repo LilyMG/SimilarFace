@@ -37,15 +37,6 @@
             android:label="@string/select_an_image"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".log.VerificationLogActivity"
-            android:label="@string/verification_log"
-            android:parentActivityName=".ui.FaceVerificationActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.FaceVerificationActivity" />
-        </activity>
-        <activity
             android:name=".log.FindSimilarFaceLogActivity"
             android:label="@string/find_similar_face_log"
             android:parentActivityName=".ui.FindSimilarFaceActivity"
