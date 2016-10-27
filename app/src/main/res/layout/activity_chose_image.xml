@@ -1,56 +1,59 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/view_margin">
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/view_margin"
+    android:gravity="center">
 
     <RelativeLayout
-        android:id="@+id/image_control"
-        android:layout_width="100dp"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="@dimen/view_margin"
-        android:layout_marginRight="@dimen/view_margin">
+        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:text="@string/target_face" />
+        <ListView
+            android:id="@+id/list_faces"
+            android:layout_width="100dp"
+            android:layout_height="300dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="#E0E0E0"
+            android:verticalSpacing="@dimen/view_margin" />
 
-        <Button
-            android:id="@+id/select_image"
-            style="@style/ButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:onClick="selectImage"
-            android:text="@string/select_image" />
-
+        <ImageView
+            android:id="@id/image"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginEnd="@dimen/view_margin"
+            android:layout_marginRight="@dimen/view_margin"
+            android:layout_toLeftOf="@+id/list_faces"
+            android:layout_toStartOf="@+id/list_faces"
+            android:background="#E0E0E0"
+            android:contentDescription="@string/face" />
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/list_faces"
-        android:layout_width="64dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:background="#E0E0E0"
-        android:verticalSpacing="@dimen/view_margin" />
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@id/image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="@dimen/view_margin"
-        android:layout_marginRight="@dimen/view_margin"
-        android:layout_toEndOf="@+id/image_control"
-        android:layout_toLeftOf="@+id/list_faces"
-        android:layout_toRightOf="@+id/image_control"
-        android:layout_toStartOf="@+id/list_faces"
-        android:background="#E0E0E0"
-        android:contentDescription="@string/face" />
+
+        <ImageView
+            android:id="@+id/camera"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="@dimen/view_margin"
+            android:onClick="takePhoto"
+            android:src="@android:drawable/ic_menu_camera" />
+
+
+        <ImageView
+            android:id="@+id/gallery"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="@dimen/view_margin"
+            android:onClick="selectImageInAlbum"
+            android:src="@android:drawable/ic_menu_gallery" />
+
+    </LinearLayout>
 
 </RelativeLayout>

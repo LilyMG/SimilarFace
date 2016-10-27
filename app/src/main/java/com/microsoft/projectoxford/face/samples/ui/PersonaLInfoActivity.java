@@ -103,7 +103,7 @@ public class PersonaLInfoActivity extends AppCompatActivity {
     }
 
     public void startSearch(View view) {
-        Intent activityIntent = new Intent(this, FindSimilarFaceActivity.class);
+        Intent activityIntent = new Intent(this, ChoseImageActivity.class);
         activityIntent.setData(intent.getData());
         startActivity(activityIntent);
     }
