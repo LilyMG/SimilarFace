@@ -388,7 +388,7 @@ public class FindSimilarFaceActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, 0, 0, "next").setIcon(R.drawable.abc_ic_menu_paste_mtrl_am_alpha)
+        menu.add(0, 0, 0, "next").setIcon(R.drawable.ic_arrow_forward_white)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return true;
     }
